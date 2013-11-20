@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>utpl test</title>
+    <script src="utpl.js"></script>
+</head>
+<body>
+    <h1>utpl test</h1>
+    <ul id="content"></ul>
+    <p id="res"></p>
+
+    <textarea id="tpl-t" style="display:none">
+        <% _.each(people, function(name) { %> <li><%= name %></li> <% }); %>
+    </textarea>
+    <script id="tpl-s" type="text/tpl">
+        <% _.each(people, function(name) { %> <li><%= name %></li> <% }); %>
+    </script>
+
+    <script>
+
+        function test(type, times) {
+
+            var statTime = (+ new Date);
+
+            var tpl;
+            var output;
+            for (var i = 0; i < times; i++) {
+
+                switch (type) {  
+                    case "script":
+                        tpl = document.getElementById('tpl-s').innerHTML;
+                        break;  
+                    case "textarea":
+                        tpl = document.getElementById('tpl-t').value;
+                        break;
+                    default:  
+                        tpl = "<% _.each(people, function(name) { %> <li><%= name %></li> <% }); %>";  
+                }
+                
+                output = utpl.template(tpl, {
+                    people: ['雷哥', '新乐', '诗才', '我']
+                });
+
+                document.getElementById('content').innerHTML = output;
+
+            }
+
+            var endTime = (+ new Date);
+
+            document.getElementById('res').innerHTML += ""
+                + "方式 "
+                + type
+                + " 渲染 "
+                + times
+                + " 次 "
+                + " 用时 "
+                + (endTime - statTime)
+                + " ms <br />";
+        }
+
+        test('textarea', 1000);
+        test('script', 1000);
+        test('string', 1000);
+
+
+    </script>
+</body>
+</html>
