@@ -1,5 +1,5 @@
 /**
- * @file utpl.amd.js 
+ * @file utpl-amd.js 
  * @desc Underscore.template AMD
  * @author junmer
  */
@@ -64,16 +64,6 @@ define(function() {
     return keys;
   };
 
-  // Invert the keys and values of an object. The values must be serializable.
-  _.invert = function(obj) {
-    var result = {};
-    var keys = _.keys(obj);
-    for (var i = 0, length = keys.length; i < length; i++) {
-      result[obj[keys[i]]] = keys[i];
-    }
-    return result;
-  };
-
   // Fill in a given object with default properties.
   _.defaults = function(obj) {
     each(slice.call(arguments, 1), function(source) {
@@ -96,16 +86,13 @@ define(function() {
       "'": '&#x27;'
     }
   };
-  entityMap.unescape = _.invert(entityMap.escape);
-
   // Regexes containing the keys and values listed immediately above.
   var entityRegexes = {
-    escape:   new RegExp('[' + _.keys(entityMap.escape).join('') + ']', 'g'),
-    unescape: new RegExp('(' + _.keys(entityMap.unescape).join('|') + ')', 'g')
+    escape:   new RegExp('[' + _.keys(entityMap.escape).join('') + ']', 'g')
   };
 
   // Functions for escaping and unescaping strings to/from HTML interpolation.
-  _.each(['escape', 'unescape'], function(method) {
+  _.each(['escape'], function(method) {
     _[method] = function(string) {
       if (string == null) return '';
       return ('' + string).replace(entityRegexes[method], function(match) {
